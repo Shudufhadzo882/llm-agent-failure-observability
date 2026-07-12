@@ -1,0 +1,10 @@
+streamlit
+plotly
+pandas
+numpy
+langchain
+langchain-core
+langchain-google-genai
+scikit-learn
+tqdm
+python-dotenv
