@@ -104,7 +104,7 @@ Open **[http://127.0.0.1:8501](http://127.0.0.1:8501)** in your browser to inter
    git add .
    git commit -m "Initial commit of AI Risk & Compliance Observability App"
    git branch -M main
-   git remote add origin https://github.com/your-username/your-repo-name.git
+   git remote add origin https://github.com/Shudufhadzo882/llm-agent-failure-observability.git
    git push -u origin main
    ```
 
@@ -112,7 +112,7 @@ Open **[http://127.0.0.1:8501](http://127.0.0.1:8501)** in your browser to inter
 1. Go to [share.streamlit.io](https://share.streamlit.io/) and log in with your GitHub account.
 2. Click **Create app**, select your repository, branch (`main`), and set the main file path to `dashboard.py`.
 3. If using any secret API keys inside the deployed app, enter them in the app settings' **Secrets** section.
-4. Click **Deploy!** Once compiled, Streamlit will give you a public, live shareable URL (e.g., `https://your-app.streamlit.app`).
+4. Click **Deploy!** Once compiled, Streamlit will give you a public, live shareable URL: **https://llm-agent-failure-observability-h4dpsxvihdmupx547redso.streamlit.app/**.
 
 ### Step 3: Share on LinkedIn
 Copy your live Streamlit URL and share it with your professional network:
@@ -120,7 +120,7 @@ Copy your live Streamlit URL and share it with your professional network:
 > 
 > I built an asynchronous LLM-judging pipeline using LangChain & Gemini to evaluate AI agent failures. It parses log files, classifies root causes (Hallucinations, Planning Failures, etc.), processes them through an ETL pipeline into a SQLite Star Schema, and serves an interactive dashboard.
 > 
-> 🔗 Live App: [Insert your Streamlit App URL]
-> 📁 GitHub Code: [Insert your GitHub Repo URL]
+> 🔗 Live App: https://llm-agent-failure-observability-h4dpsxvihdmupx547redso.streamlit.app/
+> 📁 GitHub Code: https://github.com/Shudufhadzo882/llm-agent-failure-observability
 > 
 > #AI #LLM #Observability #Streamlit #GenAI #Mangement #RiskCompliance
