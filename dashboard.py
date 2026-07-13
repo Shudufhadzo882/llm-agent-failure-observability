@@ -269,13 +269,7 @@ def metric_card(label, value, delta=None, delta_type="up"):
     cls = f"delta-{delta_type}"
     arrow = "↑" if delta_type == "up" else ("↓" if delta_type == "down" else "→")
     delta_html = f'<div class="metric-delta {cls}">{arrow} {delta}</div>' if delta else ""
-    st.markdown(f"""
-    <div class="metric-card">
-        <div class="metric-label">{label}</div>
-        <div class="metric-value">{value}</div>
-        {delta_html}
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f'<div class="metric-card"><div class="metric-label">{label}</div><div class="metric-value">{value}</div>{delta_html}</div>', unsafe_allow_html=True)
 
 # Plotly styling dictionary based on current theme state
 PLOT_LAYOUT = dict(
@@ -336,12 +330,7 @@ except Exception as e:
 # --- HEADER SECTION ---
 head_left, head_right = st.columns([8, 1])
 with head_left:
-    st.markdown("""
-    <div style="margin-bottom: 1.5rem;">
-        <span style="font-size: 1.35rem; font-weight: 700; color: var(--text); letter-spacing: -0.02em;">◆ AI Risk & Compliance Observability</span>
-        <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 0.15rem;">LLM Agent Failure Mode Analysis & Judge Audit Log</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<div style="margin-bottom: 1.5rem;"><span style="font-size: 1.35rem; font-weight: 700; color: var(--text); letter-spacing: -0.02em;">◆ AI Risk & Compliance Observability</span><div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 0.15rem;">LLM Agent Failure Mode Analysis & Judge Audit Log</div></div>', unsafe_allow_html=True)
 with head_right:
     theme_label = "☀️ Light" if IS_DARK else "🌙 Dark"
     st.button(theme_label, on_click=toggle_theme, use_container_width=True)
@@ -383,11 +372,7 @@ with tab_overview:
     
     with ch_col1:
         # Plot 1: Failure Distribution by Category (True vs Predicted)
-        st.markdown("""
-        <div class="chart-wrap">
-            <div class="chart-title">Failure Mode Distributions</div>
-            <div class="chart-subtitle">Comparison of true (ground truth) vs predicted failure types</div>
-        """, unsafe_allow_html=True)
+        st.markdown('<div class="chart-wrap"><div class="chart-title">Failure Mode Distributions</div><div class="chart-subtitle">Comparison of true (ground truth) vs predicted failure types</div>', unsafe_allow_html=True)
         
         true_counts = df_evals['true_failure'].value_counts().reset_index()
         true_counts.columns = ['Failure Mode', 'Count']
@@ -424,11 +409,7 @@ with tab_overview:
         
     with ch_col2:
         # Plot 2: Severity Distribution
-        st.markdown("""
-        <div class="chart-wrap">
-            <div class="chart-title">Severity Level Risk Breakdown</div>
-            <div class="chart-subtitle">Volumetric counts of agent failures categorized by severity levels</div>
-        """, unsafe_allow_html=True)
+        st.markdown('<div class="chart-wrap"><div class="chart-title">Severity Level Risk Breakdown</div><div class="chart-subtitle">Volumetric counts of agent failures categorized by severity levels</div>', unsafe_allow_html=True)
         
         severity_order = ['Low', 'Medium', 'High', 'Critical']
         sev_counts = df_evals['true_severity'].value_counts().reindex(severity_order).fillna(0).reset_index()
@@ -452,11 +433,7 @@ with tab_overview:
         st.markdown("</div>", unsafe_allow_html=True)
         
     # 3. Third Row: Domain Breakdown
-    st.markdown("""
-    <div class="chart-wrap">
-        <div class="chart-title">Failures and Classification Matches by Domain</div>
-        <div class="chart-subtitle">Comparison of correct matches and classifier failures per domain</div>
-    """, unsafe_allow_html=True)
+    st.markdown('<div class="chart-wrap"><div class="chart-title">Failures and Classification Matches by Domain</div><div class="chart-subtitle">Comparison of correct matches and classifier failures per domain</div>', unsafe_allow_html=True)
     
     domain_df = df_evals.groupby(['domain', 'is_accurate_match']).size().reset_index(name='count')
     domain_df['Match Status'] = domain_df['is_accurate_match'].map({1: 'Match', 0: 'Mismatch'})
@@ -545,41 +522,12 @@ with tab_logs:
         
         sev_html = f'<span class="badge {sev_cls}">{row["true_severity"]}</span>'
         
-        table_rows_html += f"""
-        <tr>
-            <td style="font-family: 'JetBrains Mono', monospace; font-weight:600;">{row['task_id']}</td>
-            <td>{row['domain']}</td>
-            <td>{row['difficulty']}</td>
-            <td>{row['true_failure']}</td>
-            <td {pred_fail_style}>{row['pred_failure']}</td>
-            <td>{sev_html}</td>
-            <td>{badge_html}</td>
-        </tr>
-        """
+        table_rows_html += f"<tr><td style=\"font-family: 'JetBrains Mono', monospace; font-weight:600;\">{row['task_id']}</td><td>{row['domain']}</td><td>{row['difficulty']}</td><td>{row['true_failure']}</td><td {pred_fail_style}>{row['pred_failure']}</td><td>{sev_html}</td><td>{badge_html}</td></tr>"
         
     if not table_rows_html:
         table_rows_html = "<tr><td colspan='7' style='text-align:center; color:var(--text-muted);'>No failure logs found matching the filter criteria.</td></tr>"
         
-    table_full_html = f"""
-    <div class="table-container">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Task ID</th>
-                    <th>Domain</th>
-                    <th>Difficulty</th>
-                    <th>True Failure Type</th>
-                    <th>Predicted Failure Type</th>
-                    <th>True Severity</th>
-                    <th>Match Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {table_rows_html}
-            </tbody>
-        </table>
-    </div>
-    """
+    table_full_html = f'<div class="table-container"><table class="data-table"><thead><tr><th>Task ID</th><th>Domain</th><th>Difficulty</th><th>True Failure Type</th><th>Predicted Failure Type</th><th>True Severity</th><th>Match Status</th></tr></thead><tbody>{table_rows_html}</tbody></table></div>'
     st.markdown(table_full_html, unsafe_allow_html=True)
     st.markdown("<div style='height: 1.5rem;'></div>", unsafe_allow_html=True)
     
@@ -598,47 +546,16 @@ with tab_logs:
         ins_col1, ins_col2 = st.columns(2)
         
         with ins_col1:
-            st.markdown(f"""
-            <div class="detail-card">
-                <div class="detail-label">Task ID</div>
-                <div style="font-size: 1.1rem; font-weight: 700; font-family: 'JetBrains Mono'; margin-bottom: 0.75rem;">{selected_task_id}</div>
-                
-                <div class="detail-label">Prompt</div>
-                <div class="detail-content">{task_text_row['prompt']}</div>
-                
-                <div style="margin-top: 1rem;" class="detail-label">Available Context</div>
-                <div class="detail-content" style="max-height: 250px;">{task_text_row['context']}</div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f'<div class="detail-card"><div class="detail-label">Task ID</div><div style="font-size: 1.1rem; font-weight: 700; font-family: \'JetBrains Mono\'; margin-bottom: 0.75rem;">{selected_task_id}</div><div class="detail-label">Prompt</div><div class="detail-content">{task_text_row["prompt"]}</div><div style="margin-top: 1rem;" class="detail-label">Available Context</div><div class="detail-content" style="max-height: 250px;">{task_text_row["context"]}</div></div>', unsafe_allow_html=True)
             
         with ins_col2:
-            st.markdown(f"""
-            <div class="detail-card">
-                <div class="detail-label">Expected Answer (Ground Truth)</div>
-                <div class="detail-content" style="border-left: 3px solid var(--green); background: var(--green-muted); max-height: 150px;">{task_text_row['expected_answer']}</div>
-                
-                <div style="margin-top: 1rem;" class="detail-label">Flawed Agent Answer</div>
-                <div class="detail-content" style="border-left: 3px solid var(--red); background: var(--red-muted); max-height: 150px;">{task_text_row['agent_answer']}</div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f'<div class="detail-card"><div class="detail-label">Expected Answer (Ground Truth)</div><div class="detail-content" style="border-left: 3px solid var(--green); background: var(--green-muted); max-height: 150px;">{task_text_row["expected_answer"]}</div><div style="margin-top: 1rem;" class="detail-label">Flawed Agent Answer</div><div class="detail-content" style="border-left: 3px solid var(--red); background: var(--red-muted); max-height: 150px;">{task_text_row["agent_answer"]}</div></div>', unsafe_allow_html=True)
             
             # Judge Notes box
             match_cls = "badge-green" if eval_row['is_accurate_match'] == 1 else "badge-red"
             match_text = "Match" if eval_row['is_accurate_match'] == 1 else "Mismatch"
             
-            st.markdown(f"""
-            <div class="detail-card" style="border-left: 4px solid {"var(--accent)" if eval_row['is_accurate_match'] == 1 else "var(--amber)"};">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                    <div class="detail-label" style="margin-bottom: 0;">🤖 Judge Analysis Rationale</div>
-                    <span class="badge {match_cls}">{match_text}</span>
-                </div>
-                <div style="margin-bottom: 0.5rem; font-size: 0.8rem;">
-                    <strong>Predicted Category:</strong> <code style="font-family:'JetBrains Mono';">{eval_row['pred_failure']}</code><br>
-                    <strong>Predicted Severity:</strong> <code style="font-family:'JetBrains Mono';">{eval_row['pred_severity']}</code>
-                </div>
-                <div class="detail-text">{eval_row['eval_notes']}</div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f'<div class="detail-card" style="border-left: 4px solid {"var(--accent)" if eval_row["is_accurate_match"] == 1 else "var(--amber)"};"><div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;"><div class="detail-label" style="margin-bottom: 0;">🤖 Judge Analysis Rationale</div><span class="badge {match_cls}">{match_text}</span></div><div style="margin-bottom: 0.5rem; font-size: 0.8rem;"><strong>Predicted Category:</strong> <code style="font-family:\'JetBrains Mono\';">{eval_row["pred_failure"]}</code><br><strong>Predicted Severity:</strong> <code style="font-family:\'JetBrains Mono\';">{eval_row["pred_severity"]}</code></div><div class="detail-text">{eval_row["eval_notes"]}</div></div>', unsafe_allow_html=True)
     else:
         st.info("Filter selection returned zero logs. Reset filters to inspect tasks.")
 
